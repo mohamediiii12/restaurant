@@ -11,11 +11,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Restaurant App'),
+        ),
+        body: const Center(
+          child: Text('Welcome to the Restaurant App!'),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: 'Menu',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
+      ),
       title: 'Flutter Demo',
       theme: ThemeData(
-        
-        
+
       ),
     );
   }
 }
+   
+
+        
+    
+  
+  
