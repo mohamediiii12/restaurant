@@ -23,7 +23,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=3.5.0 <4.0.0"
 
-  flutter: ">=3.7.0"
+  # flutter: ">=3.7.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,8 +38,7 @@ dependencies:
     
     
     # UI
-  cupertino_icons: ^1.0.8
-
+  
   #  State Management
   flutter_bloc: ^9.1.1
  ## hydrated_bloc: 10.0.0  # تخزين الحالة تلقائيًا
