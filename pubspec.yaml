@@ -106,7 +106,6 @@ assets:
   - assets/images/logo_restaurant.png
 
    
-  # No assets currently listed. Add valid asset paths here if needed.
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
