@@ -1,118 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../control/login_cubit.dart';
-import '../control/login_state.dart';
-import '../data/login_repository.dart';
+import 'package:restaurant/home%20feature/view/home_screen.dart';
+
 import 'widgets/app_button.dart';
 import 'widgets/app_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final email = TextEditingController();
-  final pass = TextEditingController();
-  bool showPass = false;
-  bool remember = true;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => LoginCubit(LoginRepository()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Log in')),
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: BlocConsumer<LoginCubit, LoginState>(
-                listener: (context, state) {
-                  if (state is LoginFailure) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.message)));
-                  } else if (state is LoginSuccess) {
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  }
-                },
-                builder: (context, state) {
-                  final loading = state is LoginLoading;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 24),
-                      const Text('أهلًا بيك 👋',
-                          style: TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      const Text(
-                          'Register your entry to an eating request quickly',
-                          style: TextStyle(color: Colors.black54)),
-                      const SizedBox(height: 24),
-                      AppTextField(
-                          controller: email,
-                          label: 'e-mail',
-                          keyboardType: TextInputType.emailAddress),
-                      const SizedBox(height: 12),
-                      TextField(
-                        controller: pass,
-                        obscureText: !showPass,
-                        decoration: InputDecoration(
-                          labelText: 'password',
-                          suffixIcon: IconButton(
-                            onPressed: () =>
-                                setState(() => showPass = !showPass),
-                            icon: Icon(showPass
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                          ),
-                        ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 250, 166, 69), // yellow base
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 40),
+                const Text(
+                  "Log In",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Welcome",
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
+                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                const SizedBox(height: 30),
+                AppTextField(
+                  hint: "Email or Mobile Number",
+                  controller: emailController,
+                ),
+                const SizedBox(height: 15),
+                AppTextField(
+                  hint: "Password",
+                  controller: passwordController,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(color: Colors.red.shade400),
+                  ),
+                ),
+                const SizedBox(height: 25),
+                AppButton(
+                  text: "Log In",
+                  onPressed: () {
+                  
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Switch(
-                              value: remember,
-                              onChanged: (v) => setState(() => remember = v)),
-                          const Text('Remind me'),
-                          const Spacer(),
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text('I forgot the password?')),
-                        ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const Text("or sign up with"),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.g_mobiledata, color: Colors.red),
+                    ),
+                    const SizedBox(width: 20),
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.facebook, color: Colors.blue),
+                    ),
+                    const SizedBox(width: 20),
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.fingerprint, color: Colors.orange),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("Don’t have an account? "),
+                    Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 12),
-                      AppButton(
-                        text: loading ? 'Entry ...' : 'Log in',
-                        onPressed: loading
-                            ? null
-                            : () => context
-                                .read<LoginCubit>()
-                                .login(email.text.trim(), pass.text.trim()),
-                      ),
-                      const SizedBox(height: 16),
-                      const Center(child: Text('Or continued as a visitor ')),
-                      const SizedBox(height: 8),
-                      OutlinedButton(
-                        onPressed: loading
-                            ? null
-                            : () => Navigator.of(context)
-                                .pushReplacementNamed('/home'),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                        ),
-                        child: const Text('Browse restaurants'),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                    )
+                  ],
+                )
+              ],
             ),
           ),
         ),

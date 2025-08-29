@@ -40,7 +40,7 @@ dependencies:
     # UI
   
   #  State Management
-  flutter_bloc: ^9.1.1
+  
  ## hydrated_bloc: 10.0.0  # تخزين الحالة تلقائيًا
 
   #  Code Generation

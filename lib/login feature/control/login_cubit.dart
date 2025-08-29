@@ -1,22 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant/login feature/data/login_repository.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final LoginRepository repo;
-  LoginCubit(this.repo) : super(const LoginInitial());
+  LoginCubit() : super(LoginInitial());
 
-  Future<void> login(String email, String password) async {
-    if (email.isEmpty || password.isEmpty) {
-      emit(const LoginFailure('Please enter mail and password'));
-      return;
-    }
-    emit(const LoginLoading());
-    try {
-      final user = await repo.login(email: email, password: password);
-      emit(LoginSuccess(user));
-    } catch (e) {
-      emit(LoginFailure(e.toString().replaceFirst('Exception: ', '')));
+  void login(String email, String password) async {
+    emit(LoginLoading());
+    await Future.delayed(const Duration(seconds: 2)); // simulate api
+    if (email == "test@test.com" && password == "123456") {
+      emit(LoginSuccess());
+    } else {
+      emit(LoginError("Invalid credentials"));
     }
   }
 }

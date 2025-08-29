@@ -1,21 +1,15 @@
-import 'package:restaurant/home feature/data/restaurant_model.dart';
+import '../data/product_model.dart';
 
-abstract class HomeState {
-  const HomeState();
-}
+abstract class HomeState {}
 
-class HomeLoading extends HomeState {
-  const HomeLoading();
-}
+class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final List<String> categories;
-  final List<Restaurant> restaurants;
-  final String selectedCategory;
-  const HomeLoaded(this.categories, this.restaurants, this.selectedCategory);
+  final List<ProductModel> products;
+  HomeLoaded(this.products);
 }
 
-class HomeFailure extends HomeState {
+class HomeError extends HomeState {
   final String message;
-  const HomeFailure(this.message);
+  HomeError(this.message);
 }

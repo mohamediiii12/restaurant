@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
+  final String hint;
+  final bool obscureText;
   final TextEditingController controller;
-  final String label;
-  final bool obscure;
-  final TextInputType keyboardType;
 
   const AppTextField({
     super.key,
+    required this.hint,
     required this.controller,
-    required this.label,
-    this.obscure = false,
-    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      obscureText: obscure,
-      keyboardType: keyboardType,
+      obscureText: obscureText,
       decoration: InputDecoration(
-        labelText: label,
+        hintText: hint,
+        filled: true,
+        fillColor: const Color(0xFFFFF3CD), // light yellow
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }

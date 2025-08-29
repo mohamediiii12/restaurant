@@ -1,23 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant/home feature/data/home_repository.dart';
 import 'home_state.dart';
+import 'package:restaurant/home feature/data/product_model.dart';
+import 'package:restaurant/home feature/data/home_repository.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final HomeRepository repo;
-  HomeCubit(this.repo) : super(const HomeLoading()) {
-    load();
-  }
+  final HomeRepository repository;
 
-  Future<void> load({String category = 'All'}) async {
-    emit(const HomeLoading());
+  HomeCubit(this.repository) : super(HomeLoading());
+
+  void loadHomeData() async {
+    emit(HomeLoading());
     try {
-      final cats = await repo.fetchCategories();
-      final restos = await repo.fetchRestaurants(category: category);
-      emit(HomeLoaded(cats, restos, category));
+      final products = await repository.getProducts();
+      emit(HomeLoaded(products));
     } catch (e) {
-      emit(HomeFailure(e.toString()));
+      emit(HomeError("Failed to load products"));
     }
   }
-
-  void selectCategory(String c) => load(category: c);
 }

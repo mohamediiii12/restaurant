@@ -1,76 +1,192 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant/home feature/control/home_cubit.dart';
-import 'package:restaurant/home feature/control/home_state.dart';
-import 'package:restaurant/home feature/data/home_repository.dart';
-import 'widgets/category_chip.dart';
-import 'widgets/home_search_bar.dart';
-import 'widgets/restaurant_card.dart';
+import 'widgets/product_card.dart';
+import '../data/product_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeCubit(HomeRepository()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Restaurants'),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.shopping_bag_outlined)),
-            const SizedBox(width: 6),
-          ],
-        ),
-        body: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is HomeFailure) {
-              return Center(child: Text(state.message));
-            }
-            final s = state as HomeLoaded;
-            return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<HomeCubit>().load(category: s.selectedCategory),
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  const SizedBox(height: 4),
-                  const Text('Are you hungry ? Order now 🍔',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  HomeSearchBar(onChanged: (q) {}),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_, i) {
-                        final c = s.categories[i];
-                        return CategoryChip(
-                          label: c,
-                          selected: c == s.selectedCategory,
-                          onTap: () =>
-                              context.read<HomeCubit>().selectCategory(c),
-                        );
-                      },
-                      separatorBuilder: (_, __) => const SizedBox(width: 8),
-                      itemCount: s.categories.length,
-                    ),
+    final List<ProductModel> bestSellers = [
+      ProductModel(
+          id: "1",
+          name: "Cake",
+          image: "https://picsum.photos/200/300?1",
+          price: 10,
+          bestSeller: true),
+      ProductModel(
+          id: "2",
+          name: "Pizza",
+          image: "https://picsum.photos/200/300?2",
+          price: 12,
+          bestSeller: true),
+      ProductModel(
+          id: "3",
+          name: "Salad",
+          image: "https://picsum.photos/200/300?3",
+          price: 8,
+          bestSeller: true),
+    ];
+
+    final List<ProductModel> recommended = [
+      ProductModel(
+          id: "4",
+          name: "Burger",
+          image: "https://picsum.photos/200/300?4",
+          price: 9),
+      ProductModel(
+          id: "5",
+          name: "Spring Rolls",
+          image: "https://picsum.photos/200/300?5",
+          price: 7),
+    ];
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.music_note), label: ""),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🔍 Search bar
+              TextField(
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  prefixIcon: const Icon(Icons.search),
+                  fillColor: const Color(0xFFFFF3CD),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
                   ),
-                  const SizedBox(height: 12),
-                  ...s.restaurants.map((r) => RestaurantCard(restaurant: r)),
-                  const SizedBox(height: 24),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 🌞 Good Morning
+              const Text(
+                "Good Morning",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange),
+              ),
+              const Text(
+                "Rise And Shine! It’s Breakfast Time",
+                style: TextStyle(color: Colors.black54),
+              ),
+              const SizedBox(height: 20),
+
+              // 🍽️ Categories
+              SizedBox(
+                height: 80,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    CategoryChip(label: "Snacks", icon: Icons.fastfood),
+                    CategoryChip(label: "Meal", icon: Icons.rice_bowl),
+                    CategoryChip(label: "Vegan", icon: Icons.eco),
+                    CategoryChip(label: "Dessert", icon: Icons.cake),
+                    CategoryChip(label: "Drinks", icon: Icons.local_drink),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 🛒 Best Seller
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text("Best Seller",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text("View All",
+                      style: TextStyle(color: Colors.orange, fontSize: 14)),
                 ],
               ),
-            );
-          },
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 190,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: bestSellers.length,
+                  itemBuilder: (context, index) =>
+                      ProductCard(product: bestSellers[index]),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 🎉 Discount Banner
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Text(
+                  "Experience our delicious new dish\n30% OFF",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 🍔 Recommended
+              const Text("Recommend",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 190,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: recommended.length,
+                  itemBuilder: (context, index) =>
+                      ProductCard(product: recommended[index]),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class CategoryChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  const CategoryChip({super.key, required this.label, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3CD),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: Colors.orange, size: 28),
+          const SizedBox(height: 6),
+          Text(label,
+              style: const TextStyle(fontSize: 14, color: Colors.black)),
+        ],
       ),
     );
   }

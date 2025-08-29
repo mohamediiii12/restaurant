@@ -1,41 +1,36 @@
-import 'restaurant_model.dart';
+import 'product_model.dart';
 
 class HomeRepository {
-  Future<List<String>> fetchCategories() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return const ['All', 'Pizza', 'Burgers', 'Sushi', 'Grill', 'Desserts'];
-  }
+  Future<List<ProductModel>> getProducts() async {
+    await Future.delayed(const Duration(seconds: 1));
 
-  Future<List<Restaurant>> fetchRestaurants({String category = 'All'}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    final data = [
-      {
-        'id': 1,
-        'name': 'Pizza Hub',
-        'rating': 4.6,
-        'image': 'https://picsum.photos/seed/pizza/600/400',
-        'category': 'Pizza',
-        'deliveryTime': '25-35 min'
-      },
-      {
-        'id': 2,
-        'name': 'Burger Box',
-        'rating': 4.4,
-        'image': 'https://picsum.photos/seed/burger/600/400',
-        'category': 'Burgers',
-        'deliveryTime': '20-30 min'
-      },
-      {
-        'id': 3,
-        'name': 'Sushi Story',
-        'rating': 4.7,
-        'image': 'https://picsum.photos/seed/sushi/600/400',
-        'category': 'Sushi',
-        'deliveryTime': '30-40 min'
-      },
+    return [
+      ProductModel(
+        id: "1",
+        name: "Strawberry Cake",
+        image: "https://picsum.photos/200/300?1",
+        price: 10.0,
+        bestSeller: true,
+      ),
+      ProductModel(
+        id: "2",
+        name: "Veggie Pizza",
+        image: "https://picsum.photos/200/300?2",
+        price: 12.5,
+        bestSeller: true,
+      ),
+      ProductModel(
+        id: "3",
+        name: "Salad Bowl",
+        image: "https://picsum.photos/200/300?3",
+        price: 8.2,
+      ),
+      ProductModel(
+        id: "4",
+        name: "Burger",
+        image: "https://picsum.photos/200/300?4",
+        price: 9.5,
+      ),
     ];
-    final list = data.map((e) => Restaurant.fromJson(e)).toList();
-    if (category == 'All') return list;
-    return list.where((r) => r.category == category).toList();
   }
 }
