@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant/cart/control/cart_controller.dart';
-import '../controllers/cart_controller.dart';
+//import '../controllers/cart_controller.dart';
 import '../data/cart_item.dart';
 
 class CartPage extends StatefulWidget {
@@ -13,14 +13,14 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final CartController _cartController = CartController();
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
  
-    _cartController.addItem(CartItem(name: "Orange Juice", price: 30.0));
-    _cartController.addItem(CartItem(name: "Burger Meal", price: 75.0));
-    _cartController.addItem(CartItem(name: "Fries", price: 20.0));
-  }
+  //   _cartController.addItem(CartItem(name: "Orange Juice", price: 30.0));
+  //   _cartController.addItem(CartItem(name: "Burger Meal", price: 75.0));
+  //   _cartController.addItem(CartItem(name: "Fries", price: 20.0));
+  // }
 
   @override
   Widget build(BuildContext context) {
