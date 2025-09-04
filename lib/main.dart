@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: '/login', // البداية من شاشة اللوجين
+      initialRoute: '/splash', // البداية من شاشة Splash
     );
   }
 }
