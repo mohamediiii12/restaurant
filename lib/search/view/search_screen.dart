@@ -7,6 +7,8 @@ import 'widgets/search_item.dart';
 class SearchScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
 
+  SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<custom.SearchController>(context);

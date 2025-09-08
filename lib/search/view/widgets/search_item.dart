@@ -6,7 +6,7 @@ class SearchItem extends StatelessWidget {
   final String image;
   final VoidCallback onTap;
 
-  const SearchItem({required this.name, required this.price, required this.image, required this.onTap});
+  const SearchItem({super.key, required this.name, required this.price, required this.image, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
